@@ -1,0 +1,11 @@
+{
+  "name": "xchange",
+  "description": "exchange rate conversion module.",
+  "version": "1.0.0",
+  "dependencies": {
+    "q": "~1.0.1",
+    "extend":"~1.2.1"
+  },
+  "devDependencies": {
+  }
+}
