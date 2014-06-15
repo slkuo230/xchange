@@ -1,11 +1,21 @@
 {
   "name": "xchange",
   "description": "exchange rate conversion module.",
+  "main":"xchange.js",
   "version": "1.0.0",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:slkuo230/xchange.git"
+  },
   "dependencies": {
     "q": "~1.0.1",
     "extend":"~1.2.1"
   },
   "devDependencies": {
-  }
+  },
+  "author": {
+    "name": "Robert Kuo",
+    "email": "slkuo230@yahoo.com"
+  },
+  "readmeFilename": "README.md"
 }
