@@ -96,10 +96,14 @@ function getListCountries() {
     return Object.keys(COUNTRIES);
 }
 
+function getListSymbols() {
+    return COUNTRIES;
+}
+
 function updateRates(data) {
     var data      = JSON.parse(data),
         countries = data.query.results.rate,
-        _output    = extend({},COUNTRIES);
+        _output   = extend({},COUNTRIES);
 
     countries.forEach(function(country) {
         var geoCode = country.id.replace(BASE,'');
@@ -124,6 +128,8 @@ exports.getSymbol         = getSymbol;
 exports.getConversionRate = getConversionRate;
 
 exports.getListCountries  = getListCountries;
+
+exports.getListSymbols    = getListSymbols;
 
 exports.convert           = convert;
 
