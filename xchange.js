@@ -1,39 +1,39 @@
-var Q = require('q');
-var https = require('https');
-var fs = require('fs');
-var path = require('path');
-var extend = require('extend');
-var COUNTRIES = {
-    "AUD": { "symbol":"$" },
-    "CAD": { "symbol":"$" },
-    "CNY": { "symbol":"元" },
-    "EUR": { "symbol":"€" },
-    "INR": { "symbol":"₹" },
-    "KRW": { "symbol":"₩" },
-    "JPY": { "symbol":"¥" },
-    "TWD": { "symbol":"NT$" },
-    "USD": { "symbol":"$" }
-}
-var BASE = 'USD';
-var TABLE_PATH = path.join(process.cwd(),'./exchangeData.json');
+var Q = require('q'),
+    https = require('https'),
+    fs = require('fs'),
+    path = require('path'),
+    extend = require('extend'),
+    COUNTRIES = {
+        "AUD": { "symbol":"$" },
+        "CAD": { "symbol":"$" },
+        "CNY": { "symbol":"元" },
+        "EUR": { "symbol":"€" },
+        "INR": { "symbol":"₹" },
+        "KRW": { "symbol":"₩" },
+        "JPY": { "symbol":"¥" },
+        "TWD": { "symbol":"NT$" },
+        "USD": { "symbol":"$" }
+    }
+    BASE = 'USD',
+    TABLE_PATH = path.join(process.cwd(),'./exchangeData.json');
 
 function yapiRequest() {
 
-    var deferred = Q.defer(), countries = [];
+    var deferred = Q.defer(), countries = [], query, options, req;
 
     for(var country in COUNTRIES) {
         countries.push('\"' + BASE + country + '\"');
     }
 
-    var query = 'select * from yahoo.finance.xchange where pair in (' + countries.join(',') + ')';
+    query = 'select * from yahoo.finance.xchange where pair in (' + countries.join(',') + ')';
 
-    var options = {
+    options = {
         hostname: 'query.yahooapis.com',
         path: '/v1/public/yql?q=' + encodeURIComponent(query) + '&format=json&diagnostics=false&env=store://datatables.org/alltableswithkeys&callback=',
         method: 'GET'
     };
 
-    var req = https.request(options, function(res) {
+    req = https.request(options, function(res) {
 
       if(res.statusCode !== 200)
         deferred.reject(new Error('request failed with status code: ' + res.statusCode));
@@ -67,13 +67,12 @@ function getConversionRate(from,to,useStatic) {
         rates = readFile();
         conversionRate = rates[to].rate/rates[from].rate;
         deferred.resolve(conversionRate);
+    } else {
+        yapiRequest().then(function(rates) {
+            conversionRate = rates[to].rate/rates[from].rate;
+            deferred.resolve(conversionRate);
+        });
     }
-
-    yapiRequest().then(function(rates) {
-        conversionRate = rates[to].rate/rates[from].rate;
-        deferred.resolve(conversionRate);
-    });
-
     return deferred.promise;
 }
 
