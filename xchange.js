@@ -92,6 +92,10 @@ function getSymbol(country) {
     return COUNTRIES[country]['symbol'];
 }
 
+function getListCountries() {
+    return Object.keys(COUNTRIES);
+}
+
 function updateRates(data) {
     var data      = JSON.parse(data),
         countries = data.query.results.rate,
@@ -118,6 +122,8 @@ function readFile() {
 exports.getSymbol         = getSymbol;
 
 exports.getConversionRate = getConversionRate;
+
+exports.getListCountries  = getListCountries;
 
 exports.convert           = convert;
 
