@@ -119,7 +119,7 @@ function writeFile(data) {
 }
 
 function readFile() {
-    if(fs.existsSync(transactionsPath))
+    if(fs.existsSync(TABLE_PATH))
         return JSON.parse(fs.readFileSync(TABLE_PATH));
     return {};
 }
