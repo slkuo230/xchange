@@ -119,7 +119,9 @@ function writeFile(data) {
 }
 
 function readFile() {
-    return JSON.parse(fs.readFileSync(TABLE_PATH));
+    if(fs.existsSync(transactionsPath))
+        return JSON.parse(fs.readFileSync(TABLE_PATH));
+    return {};
 }
 
 exports.getSymbol         = getSymbol;
